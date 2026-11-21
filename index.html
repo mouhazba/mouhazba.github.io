@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mamadou (Mahadiou) Ba · IT Operations & Python</title>
+<meta name="description" content="IT Operations and Python developer in Brooklyn, NY. Google Workspace, Salesforce, Microsoft 365, Linux, automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F1F4F2;
+    --ink: #1B2A2F;
+    --ink-soft: #4A5B60;
+    --rule: #C9D3CF;
+    --ok: #0F7B6C;
+    --pending: #B7791F;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+    --measure: 66ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #142024;
+      --ink: #E6ECEA;
+      --ink-soft: #A3B3B0;
+      --rule: #2C3D42;
+      --ok: #3CC2A8;
+      --pending: #E3A948;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 1.0625rem/1.6 var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration-color: var(--ok); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  a:hover { color: var(--ok); }
+  :focus-visible { outline: 3px solid var(--ok); outline-offset: 3px; border-radius: 2px; }
+
+  /* Language switch: hide the inactive language */
+  html[data-lang="en"] [lang="fr"], html[data-lang="fr"] [lang="en"] { display: none !important; }
+
+  .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* Top bar */
+  .top { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 0; }
+  .top .who { font-family: var(--display); font-weight: 600; text-decoration: none; }
+  .top nav { display: flex; gap: 1.25rem; align-items: center; font-size: .95rem; }
+  .top nav a { text-decoration: none; }
+  .lang {
+    font: inherit; font-size: .9rem; color: var(--ink); background: transparent;
+    border: 1.5px solid var(--rule); border-radius: 999px; padding: .3rem .8rem; cursor: pointer;
+  }
+  .lang:hover { border-color: var(--ok); }
+  @media (max-width: 640px) { .top nav a { display: none; } }
+
+  /* Hero: the systems he keeps running */
+  .hero { padding: 3rem 0 4rem; display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 900px) { .hero { grid-template-columns: 1.1fr 1fr; align-items: end; } }
+  .hero h1 {
+    font-family: var(--display); font-weight: 800; letter-spacing: -.02em;
+    font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.02; margin: 0 0 1.25rem;
+  }
+  .hero p.lead { font-size: 1.25rem; color: var(--ink-soft); max-width: 34ch; margin: 0 0 1.75rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .btn {
+    display: inline-block; padding: .7rem 1.2rem; border-radius: 6px; text-decoration: none;
+    font-weight: 700; border: 2px solid var(--ink);
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .btn:not(.primary):hover { border-color: var(--ok); }
+
+  .systems { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+  .systems li {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    padding: .55rem 0; border-bottom: 1px solid var(--rule);
+    font-family: var(--display); font-weight: 600; font-size: clamp(1.35rem, 2.6vw, 1.9rem); letter-spacing: -.01em;
+  }
+  .systems .state { font-family: var(--body); font-weight: 400; font-size: .9rem; color: var(--ink-soft); white-space: nowrap; }
+  .dot { display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; background: var(--ok); margin-right: .45rem; vertical-align: .05em; }
+  .dot.pending { background: var(--pending); }
+  .systems-caption { font-size: .9rem; color: var(--ink-soft); margin: .75rem 0 0; }
+
+  /* One orchestrated moment: a boot check on load */
+  @media (prefers-reduced-motion: no-preference) {
+    .systems li { animation: check .45s ease-out both; }
+    .systems li .dot { animation: light .3s ease-out both; }
+    .systems li:nth-child(1), .systems li:nth-child(1) .dot { animation-delay: .10s; }
+    .systems li:nth-child(2), .systems li:nth-child(2) .dot { animation-delay: .22s; }
+    .systems li:nth-child(3), .systems li:nth-child(3) .dot { animation-delay: .34s; }
+    .systems li:nth-child(4), .systems li:nth-child(4) .dot { animation-delay: .46s; }
+    .systems li:nth-child(5), .systems li:nth-child(5) .dot { animation-delay: .58s; }
+    .systems li:nth-child(6), .systems li:nth-child(6) .dot { animation-delay: .70s; }
+    .systems li .dot { animation-duration: .3s; }
+  }
+  @keyframes check { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+  @keyframes light { from { background: var(--rule); } }
+
+  /* Sections */
+  section.block { padding: 3.5rem 0; border-top: 2px solid var(--ink); display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { section.block { grid-template-columns: 16rem 1fr; gap: 3rem; } }
+  section.block > h2 {
+    font-family: var(--display); font-weight: 800; font-size: 1.9rem; letter-spacing: -.015em;
+    margin: 0; line-height: 1.1;
+  }
+  .body { max-width: var(--measure); }
+  .body > p:first-child { margin-top: 0; }
+
+  /* Timeline (experience, education): dates are a real sequence */
+  .log { list-style: none; margin: 0; padding: 0; }
+  .log > li { display: grid; grid-template-columns: 1fr; gap: .25rem; padding: 0 0 2rem; }
+  @media (min-width: 640px) { .log > li { grid-template-columns: 8.5rem 1fr; gap: 1.5rem; } }
+  .log time, .log .when { color: var(--ink-soft); font-size: .95rem; padding-top: .2rem; }
+  .log h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; margin: 0; line-height: 1.25; }
+  .log .org { color: var(--ink-soft); margin: .15rem 0 .6rem; }
+  .log ul { margin: 0; padding-left: 1.1rem; }
+  .log ul li { margin: .3rem 0; }
+  .log ul li::marker { color: var(--ok); }
+
+  /* Projects: rows, not cards */
+  .projects { list-style: none; margin: 0; padding: 0; }
+  .projects li { padding: 1.25rem 0; border-bottom: 1px solid var(--rule); }
+  .projects li:first-child { padding-top: 0; }
+  .projects h3 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; margin: 0 0 .35rem; }
+  .projects h3 a { text-decoration: none; }
+  .projects h3 a:hover { text-decoration: underline; }
+  .projects p { margin: 0 0 .5rem; }
+  .stack { font-size: .92rem; color: var(--ink-soft); margin: 0; }
+
+  /* Skills */
+  .skills { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .skills { grid-template-columns: 1fr 1fr; } }
+  .skills h3 { font-family: var(--display); font-weight: 600; font-size: 1.1rem; margin: 0 0 .4rem; }
+  .skills p { margin: 0; color: var(--ink-soft); }
+
+  footer { border-top: 2px solid var(--ink); padding: 3rem 0 4rem; }
+  footer h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 1rem; letter-spacing: -.015em; }
+  footer p { color: var(--ink-soft); max-width: 46ch; margin: 0 0 1.5rem; }
+  .fine { margin-top: 3rem; font-size: .85rem; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="who" href="#">Mamadou (Mahadiou) Ba</a>
+    <nav aria-label="Main">
+      <a href="#work"><span lang="en">Work</span><span lang="fr">Expérience</span></a>
+      <a href="#projects"><span lang="en">Projects</span><span lang="fr">Projets</span></a>
+      <a href="#contact">Contact</a>
+      <button class="lang" type="button" id="lang-toggle" aria-label="Switch language">
+        <span lang="en">Français</span><span lang="fr">English</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <h1 id="hero-title">
+          <span lang="en">I keep a non-profit's systems running, secure and documented.</span>
+          <span lang="fr">Je fais tourner les systèmes d'une association, en sécurité et documentés.</span>
+        </h1>
+        <p class="lead">
+          <span lang="en">IT Operations &amp; Python developer in Brooklyn, NY. I administer SaaS platforms, harden identity and email, and automate the rest with Python.</span>
+          <span lang="fr">IT Operations et développeur Python à Brooklyn (New York). J'administre des plateformes SaaS, je sécurise les identités et l'e-mail, et j'automatise le reste en Python.</span>
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="https://www.linkedin.com/in/mamadou-ba-a740b1130/" target="_blank" rel="noopener">
+            <span lang="en">Contact me on LinkedIn</span><span lang="fr">Me contacter sur LinkedIn</span>
+          </a>
+          <a class="btn" href="https://github.com/mouhazba" target="_blank" rel="noopener">
+            <span lang="en">See my GitHub</span><span lang="fr">Voir mon GitHub</span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <ul class="systems" aria-label="Systems I work with">
+          <li>Google Workspace <span class="state"><span class="dot" aria-hidden="true"></span><span lang="en">Super Admin</span><span lang="fr">Super Admin</span></span></li>
+          <li>Salesforce <span class="state"><span class="dot" aria-hidden="true"></span><span lang="en">Admin</span><span lang="fr">Admin</span></span></li>
+          <li>Microsoft 365 <span class="state"><span class="dot" aria-hidden="true"></span><span lang="en">Support</span><span lang="fr">Support</span></span></li>
+          <li>Shopify <span class="state"><span class="dot" aria-hidden="true"></span><span lang="en">Storefront &amp; DNS</span><span lang="fr">Boutique et DNS</span></span></li>
+          <li>Linux <span class="state"><span class="dot" aria-hidden="true"></span><span lang="en">Daily driver</span><span lang="fr">Au quotidien</span></span></li>
+          <li>Python <span class="state"><span class="dot pending" aria-hidden="true"></span><span lang="en">Leveling up</span><span lang="fr">En progression</span></span></li>
+        </ul>
+        <p class="systems-caption">
+          <span lang="en">Green: in production today. Amber: actively learning toward advanced level.</span>
+          <span lang="fr">Vert : en production aujourd'hui. Ambre : en apprentissage vers un niveau avancé.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="block" id="about" aria-labelledby="about-title">
+      <h2 id="about-title"><span lang="en">About</span><span lang="fr">À propos</span></h2>
+      <div class="body">
+        <p lang="en">Most of my career has been built on one habit: understanding how things really work before touching them. At Philanthropy Leaders, that means owning the day-to-day IT of a small team, from user accounts and access rights to email authentication and password management, and writing down every decision so the next person doesn't start from zero.</p>
+        <p lang="fr">Ma carrière repose sur une habitude : comprendre comment les choses fonctionnent vraiment avant d'y toucher. Chez Philanthropy Leaders, cela veut dire gérer l'informatique quotidienne d'une petite équipe, des comptes utilisateurs et des droits d'accès jusqu'à l'authentification de l'e-mail et la gestion des mots de passe, en documentant chaque décision pour que personne ne reparte de zéro.</p>
+        <p lang="en">On the side, I build Python tools that solve real problems, like a donation manager used by a mosque during Ramadan. I speak English, French, Wolof and Fulani.</p>
+        <p lang="fr">À côté, je construis des outils Python qui règlent de vrais problèmes, comme une application de gestion des dons utilisée par une mosquée pendant le Ramadan. Je parle français, anglais, wolof et peul.</p>
+      </div>
+    </section>
+
+    <section class="block" id="work" aria-labelledby="work-title">
+      <h2 id="work-title"><span lang="en">Work</span><span lang="fr">Expérience</span></h2>
+      <div class="body">
+        <ol class="log" reversed>
+          <li>
+            <span class="when"><span lang="en">2026 – present</span><span lang="fr">2026 – aujourd'hui</span></span>
+            <div>
+              <h3>IT Operations</h3>
+              <p class="org">Philanthropy Leaders · New York, NY</p>
+              <ul lang="en">
+                <li>Administer Google Workspace as Super Admin: added a secondary domain, configured DNS and mail routing, created operational mailboxes, onboarded users and resolved sign-in issues.</li>
+                <li>Administer Salesforce: user onboarding, permission sets, a Google single sign-on pilot, and Email-to-Salesforce logging workflows.</li>
+                <li>Set up DKIM email authentication through DNS, improving deliverability and sender trust.</li>
+                <li>Introduced a password manager with separate shared and personal vaults, reducing credentials sent by email and chat.</li>
+                <li>Trained staff on Salesforce intake and file uploads; built reports on case outcomes and memberships.</li>
+                <li>Supported the QuickBooks rollout with the finance team, Shopify storefront updates, and Microsoft 365 access recovery.</li>
+                <li>Maintain an <a href="https://github.com/mouhazba/ops-knowledge-base">operations knowledge base</a> documenting systems, decisions and procedures.</li>
+              </ul>
+              <ul lang="fr">
+                <li>Administration de Google Workspace en tant que Super Admin : ajout d'un domaine secondaire, configuration DNS et routage du courrier, création de boîtes opérationnelles, intégration des utilisateurs et résolution des problèmes de connexion.</li>
+                <li>Administration de Salesforce : intégration des utilisateurs, permission sets, pilote d'authentification unique (SSO) Google et flux de journalisation Email-to-Salesforce.</li>
+                <li>Mise en place de l'authentification DKIM via le DNS, pour une meilleure délivrabilité et la confiance des destinataires.</li>
+                <li>Introduction d'un gestionnaire de mots de passe avec des coffres partagés et personnels séparés, pour réduire l'envoi d'identifiants par e-mail et messagerie.</li>
+                <li>Formation de l'équipe au formulaire d'accueil Salesforce et au dépôt de fichiers ; création de rapports sur les dossiers clôturés et les adhésions.</li>
+                <li>Appui au déploiement de QuickBooks avec la direction financière, mises à jour de la boutique Shopify et rétablissement d'accès Microsoft 365.</li>
+                <li>Tenue d'une <a href="https://github.com/mouhazba/ops-knowledge-base">base de connaissances d'exploitation</a> qui documente systèmes, décisions et procédures.</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="block" id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title"><span lang="en">Projects</span><span lang="fr">Projets</span></h2>
+      <div class="body">
+        <ul class="projects">
+          <li>
+            <h3><a href="https://github.com/mouhazba/fouta-masdjid-app" target="_blank" rel="noopener">Fouta Masdjid app</a></h3>
+            <p lang="en">Tracks donor pledges, payments and expenses for a mosque during Ramadan, with daily, monthly and yearly reports. The interface never touches the database directly: it goes through a separate service layer.</p>
+            <p lang="fr">Suit les promesses de dons, les encaissements et les dépenses d'une mosquée pendant le Ramadan, avec des rapports journaliers, mensuels et annuels. L'interface ne touche jamais la base directement : elle passe par une couche de services.</p>
+            <p class="stack">Python, Streamlit, SQLite, pandas</p>
+          </li>
+          <li>
+            <h3><a href="https://github.com/mouhazba/LEAD-PYTHON-AI-MASTERY" target="_blank" rel="noopener"><span lang="en">Multi-source data pipeline</span><span lang="fr">Pipeline de données multi-sources</span></a></h3>
+            <p lang="en">Merges user records from a CSV export, JSON Lines events and free-text logs into one schema, reports each invalid record with its reason, and keeps processing the rest. Written from a spec, then refactored into a package of focused modules.</p>
+            <p lang="fr">Fusionne des enregistrements venant d'un export CSV, d'événements JSON Lines et de logs texte dans un format commun, signale chaque enregistrement invalide avec sa raison et continue le traitement. Écrit à partir d'un cahier des charges, puis découpé en package de modules.</p>
+            <p class="stack">Python, custom exceptions, packaging</p>
+          </li>
+          <li>
+            <h3><a href="https://github.com/mouhazba/ops-knowledge-base" target="_blank" rel="noopener"><span lang="en">Operations knowledge base</span><span lang="fr">Base de connaissances d'exploitation</span></a></h3>
+            <p lang="en">Dated project logs and procedures for Google Workspace, Salesforce, identity and access, and password management, written as I do the work.</p>
+            <p lang="fr">Journaux de projet datés et procédures pour Google Workspace, Salesforce, la gestion des identités et des accès, et les mots de passe, rédigés au fil du travail.</p>
+            <p class="stack">Markdown, IT documentation</p>
+          </li>
+          <li>
+            <h3><a href="https://github.com/mouhazba/hall_python" target="_blank" rel="noopener">hall_python</a></h3>
+            <p lang="en">A task manager built three ways (functions, decorators, classes) to compare designs, plus a breached-password checker using the Pwned Passwords API.</p>
+            <p lang="fr">Un gestionnaire de tâches écrit de trois façons (fonctions, décorateurs, classes) pour comparer les conceptions, et un vérificateur de mots de passe compromis via l'API Pwned Passwords.</p>
+            <p class="stack">Python</p>
+          </li>
+          <li>
+            <h3><a href="https://github.com/mouhazba/linux_challenges" target="_blank" rel="noopener">linux_challenges</a></h3>
+            <p lang="en">65 command-line questions with my answers: files, redirection, permissions, processes, environment variables and shell configuration.</p>
+            <p lang="fr">65 questions sur la ligne de commande avec mes réponses : fichiers, redirections, permissions, processus, variables d'environnement et configuration du shell.</p>
+            <p class="stack">Linux, Bash</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="block" id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title"><span lang="en">Skills</span><span lang="fr">Compétences</span></h2>
+      <div class="body skills">
+        <div>
+          <h3><span lang="en">SaaS administration</span><span lang="fr">Administration SaaS</span></h3>
+          <p>Google Workspace, Salesforce, Microsoft 365, Shopify, QuickBooks</p>
+        </div>
+        <div>
+          <h3><span lang="en">Identity &amp; security</span><span lang="fr">Identité et sécurité</span></h3>
+          <p><span lang="en">SSO, MFA, permission sets, least privilege, password management, DKIM and DNS</span><span lang="fr">SSO, MFA, permission sets, moindre privilège, gestion des mots de passe, DKIM et DNS</span></p>
+        </div>
+        <div>
+          <h3>Python</h3>
+          <p>Streamlit, Flask, Django, pandas, SQLite, <span lang="en">data pipelines</span><span lang="fr">pipelines de données</span></p>
+        </div>
+        <div>
+          <h3><span lang="en">Systems &amp; tools</span><span lang="fr">Systèmes et outils</span></h3>
+          <p>Linux, Bash, Git, GitHub, Claude Code</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="education" aria-labelledby="education-title">
+      <h2 id="education-title"><span lang="en">Education</span><span lang="fr">Formation</span></h2>
+      <div class="body">
+        <ol class="log" reversed>
+          <li>
+            <span class="when"><span lang="en">From spring 2027</span><span lang="fr">Dès le printemps 2027</span></span>
+            <div>
+              <h3>Computer Systems</h3>
+              <p class="org">New York City College of Technology (CUNY)</p>
+            </div>
+          </li>
+          <li>
+            <span class="when"><span lang="en">In progress</span><span lang="fr">En cours</span></span>
+            <div>
+              <h3>Google IT Support Professional Certificate</h3>
+              <p class="org">Google · Coursera</p>
+            </div>
+          </li>
+          <li>
+            <span class="when"><span lang="en">2025 – present</span><span lang="fr">2025 – aujourd'hui</span></span>
+            <div>
+              <h3><span lang="en">Data Engineering &amp; AI</span><span lang="fr">Data engineering et IA</span></h3>
+              <p class="org">edX</p>
+            </div>
+          </li>
+          <li>
+            <span class="when">2016 – 2017</span>
+            <div>
+              <h3><span lang="en">Associate degree in Computer Science</span><span lang="fr">Diplôme en informatique (bac +2)</span></h3>
+              <p class="org">Higher Institute of Computer Science (ISI) · Dakar, Senegal</p>
+            </div>
+          </li>
+          <li>
+            <span class="when">2011 – 2015</span>
+            <div>
+              <h3><span lang="en">Computer Science &amp; Applied Mathematics</span><span lang="fr">Informatique et mathématiques appliquées</span></h3>
+              <p class="org">Gaston Berger University (UGB) · Saint-Louis, Senegal</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <h2><span lang="en">Let's talk</span><span lang="fr">Parlons-en</span></h2>
+    <p>
+      <span lang="en">Open to roles in IT support, systems administration and Python automation in New York City.</span>
+      <span lang="fr">Ouvert aux postes en support IT, administration systèmes et automatisation Python à New York.</span>
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="https://www.linkedin.com/in/mamadou-ba-a740b1130/" target="_blank" rel="noopener">
+        <span lang="en">Message me on LinkedIn</span><span lang="fr">M'écrire sur LinkedIn</span>
+      </a>
+      <a class="btn" href="https://github.com/mouhazba" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <p class="fine">© 2026 Mamadou (Mahadiou) Ba</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    function setLang(lang) {
+      root.setAttribute("data-lang", lang);
+      root.setAttribute("lang", lang);
+      try { localStorage.setItem("lang", lang); } catch (e) {}
+    }
+    var saved = null;
+    try { saved = localStorage.getItem("lang"); } catch (e) {}
+    var browserFr = (navigator.language || "").toLowerCase().indexOf("fr") === 0;
+    setLang(saved || (browserFr ? "fr" : "en"));
+    document.getElementById("lang-toggle").addEventListener("click", function () {
+      setLang(root.getAttribute("data-lang") === "en" ? "fr" : "en");
+    });
+  })();
+</script>
+</body>
+</html>
